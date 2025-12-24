@@ -14,6 +14,15 @@ from .utils import add_xp_to_user, update_streak, check_achievements, get_leader
 
 
 class UserViewSet(viewsets.ModelViewSet):
+    """
+    ViewSet для управления пользователями.
+    
+    Поддерживает регистрацию (без аутентификации) и управление профилем
+    (требует аутентификации). Включает кастомные действия:
+    - me: получение данных текущего пользователя
+    - stats: статистика пользователя
+    - search: поиск пользователей по username
+    """
     queryset = User.objects.all().select_related('profile')
     
     def get_permissions(self):
@@ -130,6 +139,14 @@ class GroupViewSet(viewsets.ModelViewSet):
 
 
 class QuestViewSet(viewsets.ModelViewSet):
+    """
+    ViewSet для управления квестами.
+    
+    Публичные квесты видны всем, личные - только создателю.
+    Поддерживает поиск по названию и описанию.
+    Включает кастомное действие:
+    - accept: принятие публичного квеста (создание assignment)
+    """
     queryset = Quest.objects.all().select_related('created_by')
     serializer_class = QuestSerializer
     filter_backends = [filters.SearchFilter]
@@ -216,6 +233,16 @@ class QuestAssignmentViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['post'])
     def complete(self, request, pk=None):
+        """
+        Выполнить квест (отметить как выполненный).
+        
+        При выполнении:
+        - Начисляет XP и монеты пользователю
+        - Дает бонус +20% XP за выполнение раньше дедлайна
+        - Обновляет streak
+        - Проверяет достижения
+        - Создает уведомление
+        """
         assignment = self.get_object()
         if assignment.is_completed:
             return Response({'detail': 'Уже выполнено'}, status=status.HTTP_400_BAD_REQUEST)
