@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-rpg-bg-light;
+  }
+  
+  body {
+    @apply bg-rpg-bg text-rpg-text min-h-screen;
+    font-family: 'Orbitron', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+  }
+}
+
+@layer components {
+  .rpg-card {
+    @apply bg-rpg-bg-light border-2 border-rpg-purple rounded-lg p-4 shadow-rpg;
+  }
+
+  .rpg-card-gold {
+    @apply bg-rpg-bg-light border-2 border-rpg-gold rounded-lg p-4 shadow-rpg-gold-glow;
+  }
+
+  .rpg-button {
+    @apply px-4 py-2 rounded-lg font-display font-semibold transition-all duration-200 
+           active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .rpg-button-primary {
+    @apply rpg-button bg-rpg-purple text-white hover:bg-rpg-purple-dark 
+           shadow-rpg hover:shadow-rpg-glow;
+  }
+
+  .rpg-button-gold {
+    @apply rpg-button bg-rpg-gold text-rpg-bg hover:bg-rpg-gold-dark 
+           shadow-rpg hover:shadow-rpg-gold-glow;
+  }
+
+  .rpg-button-secondary {
+    @apply rpg-button bg-rpg-bg-light border-2 border-rpg-purple text-rpg-text 
+           hover:bg-rpg-purple hover:text-white;
+  }
+
+  .rpg-input {
+    @apply w-full px-4 py-2 bg-rpg-bg-light border-2 border-rpg-purple rounded-lg 
+           text-rpg-text placeholder-rpg-text-dim focus:outline-none focus:border-rpg-gold 
+           focus:shadow-rpg-gold-glow transition-all;
+  }
+
+  .rpg-badge {
+    @apply inline-flex items-center px-2 py-1 rounded text-xs font-semibold;
+  }
+
+  .rpg-badge-gold {
+    @apply rpg-badge bg-rpg-gold text-rpg-bg;
+  }
+
+  .rpg-badge-purple {
+    @apply rpg-badge bg-rpg-purple text-white;
+  }
+
+  .rpg-badge-green {
+    @apply rpg-badge bg-rpg-green text-white;
+  }
+
+  .rpg-badge-red {
+    @apply rpg-badge bg-rpg-red text-white;
+  }
+
+  .xp-bar {
+    @apply w-full h-3 bg-rpg-bg-light rounded-full overflow-hidden;
+  }
+
+  .xp-bar-fill {
+    @apply h-full bg-gradient-to-r from-rpg-purple to-rpg-gold transition-all duration-500;
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-rpg-bg-light;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-rpg-purple rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-rpg-purple-dark;
+}
+
+/* Mobile-first responsive utilities */
+@media (max-width: 640px) {
+  .rpg-card {
+    @apply p-3;
+  }
+}
+
