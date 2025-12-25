@@ -140,15 +140,78 @@ npm run dev
 
 Frontend будет доступен на `http://localhost:1488`
 
-### Использование Docker (опционально)
+### Использование Docker Compose (рекомендуется)
 
-Для запуска с PostgreSQL через Docker:
+Для запуска всего проекта (Backend + Frontend + PostgreSQL) через Docker Compose:
+
+1. **Создайте файл `.env` в корне проекта:**
+
+```env
+# Database
+POSTGRES_DB=rpg_db
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+
+# Django
+DJANGO_SECRET_KEY=your-secret-key-change-in-production
+DEBUG=True
+ALLOWED_HOSTS=localhost,127.0.0.1,backend
+
+# Frontend
+VITE_API_URL=http://localhost:8000/api
+```
+
+2. **Создайте файл `rpg-backend/.env` (если его нет):**
+
+```env
+SECRET_KEY=your-secret-key-here
+DEBUG=True
+```
+
+3. **Запустите все сервисы:**
 
 ```bash
-cd rpg-backend
 docker-compose up -d
-python manage.py migrate
-python manage.py runserver
+```
+
+4. **Примените миграции:**
+
+```bash
+docker-compose exec backend python manage.py migrate
+```
+
+5. **Создайте суперпользователя (опционально):**
+
+```bash
+docker-compose exec backend python manage.py createsuperuser
+```
+
+6. **Генерация тестовых данных (опционально):**
+
+```bash
+docker-compose exec backend python manage.py generate_mock_data
+```
+
+После запуска:
+- **Backend API**: http://localhost:8000
+- **Frontend**: http://localhost:1488
+- **Swagger UI**: http://localhost:8000/api/docs/
+- **PostgreSQL**: localhost:5432
+
+**Полезные команды:**
+
+```bash
+# Остановить все сервисы
+docker-compose down
+
+# Просмотр логов
+docker-compose logs -f
+
+# Пересобрать контейнеры
+docker-compose up -d --build
+
+# Выполнить команду в контейнере backend
+docker-compose exec backend python manage.py <command>
 ```
 
 ## Screenshots
